@@ -59,3 +59,8 @@
 - [x] Review sanitized Git diff and GitHub remote
 - [x] Commit and push sanitized project files to cvangavati/neighborhood-tool-lending
 - [x] Verify the pushed branch and report the secure upload result
+
+- [x] Add project README with product overview and MVP scope
+- [x] Document local setup, testing, and security practices
+- [x] Validate README and push it to cvangavati/neighborhood-tool-lending
+- [x] Verify README publication on GitHub
