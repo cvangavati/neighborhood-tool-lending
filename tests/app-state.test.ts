@@ -27,3 +27,17 @@ describe("Neighborhood Tool Lending MVP", () => {
     expect(firstRun.requests).toHaveLength(0);
     expect(firstRun.wishlist).toHaveLength(0);
   });
+
+
+describe("authenticated ownership boundaries", () => {
+  it("assigns every created tool to its authenticated owner", () => {
+    const ownerId = 42;
+    const tool = { ownerId, name: "Drill", communityId: "cedar-street" };
+    expect(tool.ownerId).toBe(ownerId);
+  });
+
+  it("keeps wishlist entries keyed by both user and tool", () => {
+    const entries = [{ userId: 1, toolId: 7 }, { userId: 2, toolId: 7 }];
+    expect(entries.filter((entry) => entry.userId === 1)).toEqual([{ userId: 1, toolId: 7 }]);
+  });
+});

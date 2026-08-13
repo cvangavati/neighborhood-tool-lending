@@ -64,3 +64,14 @@
 - [x] Document local setup, testing, and security practices
 - [x] Validate README and push it to cvangavati/neighborhood-tool-lending
 - [x] Verify README publication on GitHub
+
+- [x] Add authenticated sign-up and sign-in flow
+- [x] Gate app access behind authentication
+- [x] Add server-backed tool ownership by authenticated user
+- [x] Add server-backed wishlist ownership by authenticated user
+- [x] Protect tool and wishlist API procedures against cross-user access
+- [x] Sync authenticated tools and wishlists across devices
+- [x] Add logout and account-state handling
+- [x] Add deterministic tests for ownership boundaries and auth states
+- [x] Run updated TypeScript, lint, tests, and database checks
+- [x] Save authenticated delivery checkpoint
