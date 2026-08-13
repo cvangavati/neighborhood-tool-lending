@@ -8,16 +8,16 @@ import { useAppState, type ToolCategory } from "@/lib/app-state";
 const categories: ("All" | ToolCategory)[] = ["All", "Power tools", "Garden", "Hand tools", "Cleaning", "Outdoor"];
 
 export default function HomeScreen() {
-  const { tools, isWishlisted, toggleWishlist, profile } = useAppState();
+  const { tools, isWishlisted, toggleWishlist, profile, community } = useAppState();
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
-  const filteredTools = useMemo(() => tools.filter((tool) => {
+  const filteredTools = useMemo(() => tools.filter((tool) => (tool.communityId ?? community?.id) === community?.id).filter((tool) => {
     const matchesQuery = `${tool.name} ${tool.owner}`.toLowerCase().includes(query.toLowerCase());
     const matchesCategory = category === "All" || tool.category === category;
     return matchesQuery && matchesCategory;
-  }), [tools, query, category]);
+  }), [tools, query, category, community?.id]);
 
   return (
     <ScreenContainer className="px-5" containerClassName="bg-[#F6F1E8]"><View style={{ width: "100%", maxWidth: 820, alignSelf: "center" }}>

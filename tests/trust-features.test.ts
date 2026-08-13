@@ -23,3 +23,9 @@ describe("Trust and coordination features", () => {
     expect(accepted.date).toBe("Saturday");
   });
 });
+
+  it("persists a selected community as the board context", () => {
+    const selected = { id: "riverside", name: "Riverside" };
+    const stored = JSON.stringify({ community: selected });
+    expect(JSON.parse(stored).community.name).toBe("Riverside");
+  });

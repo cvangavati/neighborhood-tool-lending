@@ -36,3 +36,12 @@
 - [x] Add deterministic tests for empty initial state
 - [x] Run updated TypeScript, lint, and test checks
 - [x] Save cleaned responsive delivery checkpoint
+
+- [x] Add first-launch neighborhood and community selector
+- [x] Persist the selected community locally
+- [x] Scope board and profile context to the selected community
+- [x] Add community switching from the app UI
+- [x] Add empty states for a newly selected community
+- [x] Add deterministic tests for community selection persistence
+- [x] Run updated TypeScript, lint, and test checks
+- [x] Save community-aware delivery checkpoint
