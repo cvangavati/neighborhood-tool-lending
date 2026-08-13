@@ -16,3 +16,15 @@
 - [x] Add deterministic unit tests for core local data flows
 - [x] Run TypeScript, lint, and test checks
 - [x] Save final delivery checkpoint
+
+- [x] Add persistent wishlist save/remove actions on tool cards and details
+- [x] Add wishlist section to the user profile
+- [x] Add editable short bio and street name profile fields
+- [x] Show neighbor trust details in tool and request contexts
+- [x] Add pickup-time proposal messages
+- [x] Add accept/decline state for proposed pickup times
+- [x] Persist pickup agreements with each request
+- [x] Harden user-facing validation and empty states for actual use
+- [x] Add deterministic tests for wishlist, profile, and pickup-time flows
+- [x] Run updated TypeScript, lint, and test checks
+- [x] Save updated delivery checkpoint

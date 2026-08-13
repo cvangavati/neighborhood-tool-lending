@@ -8,7 +8,7 @@ import { useAppState, type ToolCategory } from "@/lib/app-state";
 const categories: ("All" | ToolCategory)[] = ["All", "Power tools", "Garden", "Hand tools", "Cleaning", "Outdoor"];
 
 export default function HomeScreen() {
-  const { tools } = useAppState();
+  const { tools, isWishlisted, toggleWishlist } = useAppState();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const filteredTools = useMemo(() => tools.filter((tool) => {
@@ -49,7 +49,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => (
           <Pressable onPress={() => router.push({ pathname: "/tool/[id]", params: { id: item.id } })} style={({ pressed }) => [{ opacity: pressed ? 0.82 : 1 }]} className="bg-[#FFFCF7] border border-[#E5DED1] rounded-[22px] p-4 mb-3 flex-row">
             <View style={{ backgroundColor: item.accent }} className="w-[76px] h-[76px] rounded-2xl items-center justify-center"><MaterialIcons name={item.icon as keyof typeof MaterialIcons.glyphMap} size={34} color="#2F6B4F" /></View>
-            <View className="flex-1 ml-4 justify-center"><View className="flex-row items-center justify-between"><Text className="text-[17px] font-bold text-[#1F2924] flex-1 mr-2">{item.name}</Text><View className={`rounded-full px-2.5 py-1 ${item.status === "available" ? "bg-[#E3F1E7]" : "bg-[#F5E9D2]"}`}><Text className={`text-[11px] font-bold ${item.status === "available" ? "text-[#31714E]" : "text-[#9A6617]"}`}>{item.status === "available" ? "AVAILABLE" : "BORROWED"}</Text></View></View><Text className="text-[13px] text-[#6D7C73] mt-1">{item.owner}  ·  {item.distance}</Text><Text numberOfLines={1} className="text-[13px] text-[#526159] mt-2">{item.description}</Text></View>
+            <View className="flex-1 ml-4 justify-center"><View className="flex-row items-center justify-between"><Text className="text-[17px] font-bold text-[#1F2924] flex-1 mr-2">{item.name}</Text><View className="flex-row items-center gap-2"><Pressable onPress={() => toggleWishlist(item.id)} hitSlop={8}><MaterialIcons name={isWishlisted(item.id) ? "favorite" : "favorite-border"} size={20} color={isWishlisted(item.id) ? "#B84C3A" : "#89948D"} /></Pressable><View className={`rounded-full px-2.5 py-1 ${item.status === "available" ? "bg-[#E3F1E7]" : "bg-[#F5E9D2]"}`}><Text className={`text-[11px] font-bold ${item.status === "available" ? "text-[#31714E]" : "text-[#9A6617]"}`}>{item.status === "available" ? "AVAILABLE" : "BORROWED"}</Text></View></View></View><Text className="text-[13px] text-[#6D7C73] mt-1">{item.owner}  ·  {item.distance}</Text><Text numberOfLines={1} className="text-[13px] text-[#526159] mt-2">{item.description}</Text></View>
           </Pressable>
         )}
         ListEmptyComponent={<View className="items-center py-16"><MaterialIcons name="search-off" size={42} color="#9AA49D" /><Text className="text-lg font-bold text-[#1F2924] mt-4">No tools found</Text><Text className="text-sm text-[#6D7C73] mt-1">Try another search or category.</Text></View>}
