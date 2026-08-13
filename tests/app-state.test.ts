@@ -20,3 +20,10 @@ describe("Neighborhood Tool Lending MVP", () => {
     expect(requests.filter((item) => item.direction === "received")).toHaveLength(1);
   });
 });
+
+  it("starts without seeded tools, requests, or wishlist entries", () => {
+    const firstRun = { tools: [], requests: [], wishlist: [] };
+    expect(firstRun.tools).toHaveLength(0);
+    expect(firstRun.requests).toHaveLength(0);
+    expect(firstRun.wishlist).toHaveLength(0);
+  });

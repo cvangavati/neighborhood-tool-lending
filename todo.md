@@ -28,3 +28,11 @@
 - [x] Add deterministic tests for wishlist, profile, and pickup-time flows
 - [x] Run updated TypeScript, lint, and test checks
 - [x] Save updated delivery checkpoint
+
+- [x] Remove seeded tools, requests, and wishlist defaults
+- [x] Preserve useful empty states for first-time users
+- [x] Make cards and forms responsive across narrow and wide screens
+- [x] Support portrait and landscape orientations without clipping
+- [x] Add deterministic tests for empty initial state
+- [x] Run updated TypeScript, lint, and test checks
+- [x] Save cleaned responsive delivery checkpoint

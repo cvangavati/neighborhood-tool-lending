@@ -1,14 +1,16 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
+import { FlatList, Pressable, Text, TextInput, View, useWindowDimensions } from "react-native";
 import { ScreenContainer } from "@/components/screen-container";
 import { useAppState, type ToolCategory } from "@/lib/app-state";
 
 const categories: ("All" | ToolCategory)[] = ["All", "Power tools", "Garden", "Hand tools", "Cleaning", "Outdoor"];
 
 export default function HomeScreen() {
-  const { tools, isWishlisted, toggleWishlist } = useAppState();
+  const { tools, isWishlisted, toggleWishlist, profile } = useAppState();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const filteredTools = useMemo(() => tools.filter((tool) => {
@@ -18,16 +20,16 @@ export default function HomeScreen() {
   }), [tools, query, category]);
 
   return (
-    <ScreenContainer className="px-5" containerClassName="bg-[#F6F1E8]">
+    <ScreenContainer className="px-5" containerClassName="bg-[#F6F1E8]"><View style={{ width: "100%", maxWidth: 820, alignSelf: "center" }}>
       <FlatList
         data={filteredTools}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingTop: 18, paddingBottom: 36 }}
+        contentContainerStyle={{ paddingTop: isLandscape ? 12 : 18, paddingBottom: 36 }}
         ListHeaderComponent={
           <View>
             <View className="flex-row items-center justify-between mb-7">
               <View>
-                <Text className="text-sm font-semibold text-[#6D7C73]">MAPLEWOOD NEIGHBORHOOD</Text>
+                <Text className="text-sm font-semibold text-[#6D7C73]">{profile.neighborhood.toUpperCase()}</Text>
                 <Text className="text-[34px] leading-[39px] font-bold text-[#1F2924] mt-1">Borrow, don’t buy.</Text>
               </View>
               <Pressable onPress={() => router.push("/add-tool")} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]} className="h-12 w-12 rounded-full bg-[#2F6B4F] items-center justify-center">
@@ -52,8 +54,9 @@ export default function HomeScreen() {
             <View className="flex-1 ml-4 justify-center"><View className="flex-row items-center justify-between"><Text className="text-[17px] font-bold text-[#1F2924] flex-1 mr-2">{item.name}</Text><View className="flex-row items-center gap-2"><Pressable onPress={() => toggleWishlist(item.id)} hitSlop={8}><MaterialIcons name={isWishlisted(item.id) ? "favorite" : "favorite-border"} size={20} color={isWishlisted(item.id) ? "#B84C3A" : "#89948D"} /></Pressable><View className={`rounded-full px-2.5 py-1 ${item.status === "available" ? "bg-[#E3F1E7]" : "bg-[#F5E9D2]"}`}><Text className={`text-[11px] font-bold ${item.status === "available" ? "text-[#31714E]" : "text-[#9A6617]"}`}>{item.status === "available" ? "AVAILABLE" : "BORROWED"}</Text></View></View></View><Text className="text-[13px] text-[#6D7C73] mt-1">{item.owner}  ·  {item.distance}</Text><Text numberOfLines={1} className="text-[13px] text-[#526159] mt-2">{item.description}</Text></View>
           </Pressable>
         )}
-        ListEmptyComponent={<View className="items-center py-16"><MaterialIcons name="search-off" size={42} color="#9AA49D" /><Text className="text-lg font-bold text-[#1F2924] mt-4">No tools found</Text><Text className="text-sm text-[#6D7C73] mt-1">Try another search or category.</Text></View>}
+        ListEmptyComponent={<View className={`items-center px-6 ${isLandscape ? "py-4" : "py-16"}`}><MaterialIcons name="handyman" size={46} color="#9AA49D" /><Text className="text-lg font-bold text-[#1F2924] mt-4 text-center">Your board is ready for its first tool</Text><Text className="text-sm text-[#6D7C73] mt-1 text-center">List something useful or set up your profile so neighbors know who is sharing.</Text><Pressable onPress={() => router.push("/add-tool")} className="bg-[#2F6B4F] rounded-xl px-5 py-3 mt-5"><Text className="font-bold text-[#FFFCF7]">List a tool</Text></Pressable></View>}
       />
+      </View>
     </ScreenContainer>
   );
 }

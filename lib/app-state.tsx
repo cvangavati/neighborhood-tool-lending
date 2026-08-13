@@ -10,24 +10,16 @@ export type Tool = { id: string; name: string; category: ToolCategory; descripti
 export type Message = { id: string; sender: string; body: string; timestamp: string; pickup?: PickupProposal };
 export type BorrowRequest = { id: string; toolId: string; toolName: string; neighbor: string; direction: "sent" | "received"; status: RequestStatus; preview: string; messages: Message[]; pickup?: PickupProposal };
 
-const seedTools: Tool[] = [
-  { id: "1", name: "Cordless drill", category: "Power tools", description: "18V drill with two batteries and a set of bits. Great for shelves, fixtures, and weekend projects.", owner: "Maya R.", neighborhood: "Maplewood", distance: "0.2 mi", status: "available", icon: "construction", accent: "#D9E9DB" },
-  { id: "2", name: "Hedge trimmer", category: "Garden", description: "Quiet electric trimmer for shaping hedges and clearing small branches.", owner: "Andre P.", neighborhood: "Maplewood", distance: "0.4 mi", status: "available", icon: "park", accent: "#F0E5C8" },
-  { id: "3", name: "Wet/dry vacuum", category: "Cleaning", description: "Compact shop vacuum for sawdust, spills, and messy home projects.", owner: "Lena K.", neighborhood: "Maplewood", distance: "0.7 mi", status: "borrowed", icon: "cleaning-services", accent: "#DDE4EE" },
-  { id: "4", name: "Folding ladder", category: "Outdoor", description: "Six-foot folding ladder that fits in a small car and stores flat.", owner: "You", neighborhood: "Maplewood", distance: "0.0 mi", status: "available", icon: "stairs", accent: "#F4D8C8", isMine: true },
-];
-const seedRequests: BorrowRequest[] = [
-  { id: "r1", toolId: "1", toolName: "Cordless drill", neighbor: "You", direction: "sent", status: "pending", preview: "Could I borrow this Saturday morning?", messages: [{ id: "m1", sender: "You", body: "Could I borrow this Saturday morning?", timestamp: "9:41 AM" }] },
-  { id: "r2", toolId: "4", toolName: "Folding ladder", neighbor: "Sam T.", direction: "received", status: "accepted", preview: "I can pick it up after work.", messages: [{ id: "m2", sender: "Sam T.", body: "I can pick it up after work.", timestamp: "Yesterday" }, { id: "m3", sender: "You", body: "That works. It will be by the front steps.", timestamp: "Yesterday" }] },
-];
-const seedProfile: UserProfile = { name: "You", neighborhood: "Maplewood", street: "", bio: "Neighbor who likes sharing useful things." };
+const seedTools: Tool[] = [];
+const seedRequests: BorrowRequest[] = [];
+const seedProfile: UserProfile = { name: "", neighborhood: "Your neighborhood", street: "", bio: "" };
 
 type AppState = { tools: Tool[]; requests: BorrowRequest[]; wishlist: string[]; profile: UserProfile; addTool: (tool: Omit<Tool, "id" | "owner" | "neighborhood" | "distance" | "isMine">) => void; toggleToolStatus: (id: string) => void; isWishlisted: (id: string) => boolean; toggleWishlist: (id: string) => void; requestTool: (tool: Tool) => BorrowRequest; sendMessage: (requestId: string, body: string, pickup?: PickupProposal) => void; proposePickup: (requestId: string, proposal: Omit<PickupProposal, "id" | "status">) => void; respondToPickup: (requestId: string, status: "accepted" | "declined") => void; updateProfile: (profile: UserProfile) => void };
 const StateContext = createContext<AppState | null>(null);
-const STORAGE_KEY = "neighborhood-tool-lending-state-v2";
+const STORAGE_KEY = "neighborhood-tool-lending-state-v3-clean";
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
-  const [tools, setTools] = useState(seedTools); const [requests, setRequests] = useState(seedRequests); const [wishlist, setWishlist] = useState<string[]>(["2"]); const [profile, setProfile] = useState(seedProfile);
+  const [tools, setTools] = useState<Tool[]>(seedTools); const [requests, setRequests] = useState<BorrowRequest[]>(seedRequests); const [wishlist, setWishlist] = useState<string[]>([]); const [profile, setProfile] = useState<UserProfile>(seedProfile);
   useEffect(() => { AsyncStorage.getItem(STORAGE_KEY).then((raw) => { if (!raw) return; try { const parsed = JSON.parse(raw); if (Array.isArray(parsed.tools)) setTools(parsed.tools); if (Array.isArray(parsed.requests)) setRequests(parsed.requests); if (Array.isArray(parsed.wishlist)) setWishlist(parsed.wishlist); if (parsed.profile) setProfile(parsed.profile); } catch { /* Keep safe defaults if local storage is unavailable. */ } }); }, []);
   useEffect(() => { AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ tools, requests, wishlist, profile })); }, [tools, requests, wishlist, profile]);
   const value = useMemo<AppState>(() => ({
