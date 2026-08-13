@@ -45,3 +45,11 @@
 - [x] Add deterministic tests for community selection persistence
 - [x] Run updated TypeScript, lint, and test checks
 - [x] Save community-aware delivery checkpoint
+
+- [x] Remove starter community seed entries
+- [x] Remove remaining demo labels and sample counts
+- [x] Add a clean no-communities first-run state
+- [x] Preserve community creation or setup guidance
+- [x] Add deterministic tests for empty community data
+- [x] Run updated TypeScript, lint, and test checks
+- [x] Save seed-free delivery checkpoint

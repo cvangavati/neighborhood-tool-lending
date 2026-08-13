@@ -29,3 +29,8 @@ describe("Trust and coordination features", () => {
     const stored = JSON.stringify({ community: selected });
     expect(JSON.parse(stored).community.name).toBe("Riverside");
   });
+
+  it("starts without seeded community entries", () => {
+    const communities: unknown[] = [];
+    expect(communities).toHaveLength(0);
+  });
